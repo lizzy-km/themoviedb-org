@@ -1,0 +1,17 @@
+.grd{
+    background-image: linear-gradient(45deg, #d6d9dc 25%, transparent 25%, transparent 50%, #d6d9dc 50%, #d6d9dc 75%, transparent 75%, transparent);
+
+}
+.none{
+    display: none;
+}.s-bg{
+    background: linear-gradient(to right, rgba(30,213,169, 1) 0%, rgba(1,180,228, 1) 100%);
+    /* background-image: url(``); */
+}
+.tmdb{
+    background-image: url('https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg');
+    background-repeat: no-repeat;
+    background-position:center ;
+}
+
+

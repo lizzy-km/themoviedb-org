@@ -1,0 +1,48 @@
+/* const {setId,fetchOvereview,review} = State() */
+/* @State review; */
+
+*::-webkit-scrollbar{
+    display: none;
+}
+
+*{
+    scrollbar-width: none;
+}
+/* .ovbg{
+    background-image: linear-gradient(to right, rgba(31.5, 10.5, 10.5, 1) calc((50vw - 170px) - 340px), rgba(31.5, 10.5, 10.5, 0.84) 50%, rgba(31.5, 10.5, 10.5, 0.84) 100%);
+} */
+.tag{
+    font-style: italic;
+}
+.np{
+    background-image: url('https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.rbg{
+    background-image: linear-gradient(to right, rgba(3,37,65, 0.8) 0%, rgba(3,37,6, 0) 100%);
+    }
+    .wb{
+        word-wrap: break-word;
+    }
+
+    .active-text{
+        background: linear-gradient(to right, #c0fecf 0%, #1ed5a9 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .text-shadow{
+        text-shadow:  0px 0px 10px linear-gradient(to right, #c0fecf 100%, #1ed5a9 0%) ;
+    }
+    input{
+        border-width:0;
+        border-style:none;
+        border-color:currentColor;
+        border-image:none;
+    }
+    .bgr{
+       background:  linear-gradient(to bottom right, rgba(31.5, 31.5, 10.5, 1), rgba(31.5, 31.5, 10.5, 0.84));
+    }
+      
+    

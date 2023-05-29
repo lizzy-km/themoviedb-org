@@ -1,0 +1,27 @@
+*{
+    transition: .3s;
+}
+.tranding{
+    background-image: url('https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg');
+    background-position: 50% 200px;
+    background-repeat: no-repeat;
+   
+}
+.active-text{
+    background: linear-gradient(to right, #c0fecf 0%, #1ed5a9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.blurc:hover{
+    filter: blur(2px);
+}
+.ov{
+    opacity: 0;
+    transition: .5s all;
+}
+.ovh:hover .ov{
+    opacity: 1;
+}
+.rbg{
+background-image: linear-gradient(to right, rgba(3,37,65, 0.8) 0%, rgba(3,37,6, 0) 100%);
+}
