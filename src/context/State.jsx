@@ -233,10 +233,36 @@ const TvR = async () => {
   };
   console.log(mvr);
   console.log(tvr);
+  const[MvdataByKeyword,setMvataByKeyword] = useState([])
+  const[TvdataByKeyword,setTvataByKeyword] = useState([])
+
+  const[keywords,setKeywords] = useState()
+  const[keywordsS,setKeywordsS] = useState('')
+ 
+  //https://api.themoviedb.org/3/discover/movie?api_key=a5abf7e1c956c65d2f3a65f71da4345c&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_keywords= 
+   const MvdataByKeywords = async () => {
+    const api = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=a5abf7e1c956c65d2f3a65f71da4345c&language=en-US&sort_by=popularity.desc&page=1&with_keywords=${keywords}`);
+    const {results} = await api.json()
+    // setResultst(results);
+    setMvataByKeyword(results)
+    console.log('Keyword'+results);
+  };
+
+  const TvdataByKeywords = async () => {
+    const api = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=a5abf7e1c956c65d2f3a65f71da4345c&language=en-US&sort_by=popularity.desc&page=1&with_keywords=${keywords}`);
+    const {results} = await api.json()
+    // setResultst(results);
+    setTvataByKeyword(results)
+    console.log('Keyword'+results);
+  };
+
+  useEffect(()=>{
+    MvdataByKeywords()
+    TvdataByKeywords()
+  },[keywords])
 
 
-
-    const data = {tvr,mvr,emptyData,sdata,setData,gn,setGn,genre,setGenreId,Genre,setResults,setResultst,movies,tv,searchMovies,searchTv,setQuery,empty,setEmpty,resultst,query,results,language,setLanguage,keywordt,keyword,lant,setLant,lan,setLan,company,setCompany,castv,cast,er,setEr,gen,setGen,country,setCountry,id,mt,setMt,imageUrl,rv,rt,review,setReview,setId,name,setName,trending,setTrending,trdata,fetchTrending,fetchTrendingW,trwdata,popular,pudata,puwdata,setPopular,fetchPopular,fetchPopularw,fetchOvereview,fetchOvereviewTv}
+    const data = {TvdataByKeyword,setKeywordsS,setKeywords,MvdataByKeyword,tvr,mvr,emptyData,sdata,setData,gn,setGn,genre,setGenreId,Genre,setResults,setResultst,movies,tv,searchMovies,searchTv,setQuery,empty,setEmpty,resultst,query,results,language,setLanguage,keywordt,keyword,lant,setLant,lan,setLan,company,setCompany,castv,cast,er,setEr,gen,setGen,country,setCountry,id,mt,setMt,imageUrl,rv,rt,review,setReview,setId,name,setName,trending,setTrending,trdata,fetchTrending,fetchTrendingW,trwdata,popular,pudata,puwdata,setPopular,fetchPopular,fetchPopularw,fetchOvereview,fetchOvereviewTv}
 
     return(
         <StateContext.Provider value={data} >

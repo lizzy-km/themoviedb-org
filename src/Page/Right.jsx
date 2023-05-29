@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { State } from '../context/State'
-
+import { useNavigate } from 'react-router-dom'
 const Right = ({review,rt}) => {
     const{keyword,keywordt,lant,setLant,lan,setLan,language,setLanguage} = State()
     // console.log(review);
-    // console.log(rt);
-    
-   
+    console.log(keyword);
+    const nav = useNavigate()
+   const navKey =()=>{
+    // nav(`/keyword/${keyword?.at(0).id}`)
+    // nav('/')
+   }
    
    if (review.id) {
    setLanguage(review?.spoken_languages)
@@ -133,83 +136,70 @@ const Right = ({review,rt}) => {
      
      <div>
                 {
-        keyword || keywordt  ? ( 
-            <div>
-         <div className=' flex items-center py-[1rem] ' >
-        <p className=' font-semibold ' >Keywords</p>
-      </div>
-      {
-        keyword ? ( 
-            <div className=' flex flex-wrap gap-[.3rem] w-[17rem]  ' >
-            {
-                  keyword?.map(data =>{
-                      return(
-                          <Link className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm ' >
-                              <p> {data.name} </p>
-                          </Link>
-                      )
-                  })
-              }
-            </div>
-        ) : ( 
-            
-                keywordt ? (
-                    <div>
-                        
-                    </div>
-                ) : (
-                    <div>
-                    No keywords have been added.
-            
-                        </div>
-                )
-            
+                    keyword &&  <div>
+               
+                    <div className=' flex items-center py-[1rem] ' >
+                   <p className=' font-semibold ' >Keywords</p>
+                 </div>
+                 <div className=' flex flex-wrap gap-[.3rem] w-[17rem]  ' >
+                       {
+                             keyword?.map(data =>{
+                                 return(
+                                     <Link to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
+                                         <p> {data.name} </p>
+                                     </Link>
+                                 )
+                             })
+                         }
+                       </div>
+                 
+                 
+                       
+                          
+                       
+                      
+                   
+                 
+                
+                       </div>
+                } 
+                 {
+                    keywordt &&  <div>
+               
+                    <div className=' flex items-center py-[1rem] ' >
+                   <p className=' font-semibold ' >Keywords</p>
+                 </div>
+                 <div className=' flex flex-wrap gap-[.3rem] w-[17rem]  ' >
+                       {
+                             keywordt?.map(data =>{
+                                 return(
+                                     <Link to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
+                                         <p> {data.name} </p>
+                                     </Link>
+                                 )
+                             })
+                         }
+                       </div>
+                 
+                 
+                       
+                          
+                       
+                      
+                   
+                 
+                
+                       </div>
+                } 
            
-        )
-      }
-      {
-        keywordt ? ( 
-            <div className=' flex flex-wrap gap-[.3rem] w-[17rem]  ' >
-            {
-                  keywordt?.map(data =>{
-                      return(
-                          <Link className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm ' >
-                              <p> {data.name} </p>
-                          </Link>
-                      )
-                  })
-              }
-            </div>
-        ) : (
-            keyword ? (
-                <div>
-                    
-                </div>
-            ) : (
-                <div>
-                No keywords have been added.
-        
-                    </div>
-            )
-        )
-      }
-            
-            </div>
-        ) : ( 
-           <div>
-            {/* No keywords have been added. */}
-           </div>
-        )
-
-      }
-     
-            </div>
       
 
       
      
        
       </div>
+      </div>
+
 
     
   )

@@ -42,7 +42,14 @@
         border-image:none;
     }
     .bgr{
-       background:  linear-gradient(to bottom right, rgba(31.5, 31.5, 10.5, 1), rgba(31.5, 31.5, 10.5, 0.84));
+        background:  linear-gradient(to bottom right, rgb(32, 24, 11), rgb(32, 32, 11));
+
+       /* backdrop-filter: blur(8px); */
+    }
+    .bgov{
+        background:   rgba(32, 24, 11, 0.613);
+        /* z-index: -1; */
+        
     }
       
     

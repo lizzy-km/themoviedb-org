@@ -12,6 +12,7 @@ import TvShow from './Page/TvShow'
 import Genre from './Page/Genre'
 import Footer from './common/Footer/Footer'
 import { MantineProvider, Text } from '@mantine/core';
+import DataByKeyword from './Page/DataByKeyword'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route exact path={`/overeview/:ids`} element={<Overeview />} />
       <Route exact path={`/genre/:id`} element={<Genre />} />
       <Route exact path={`/searchresults/:query`} element={<SearchData />} />
+      <Route exact path={`/keyword/:keyword`} element={<DataByKeyword />} />
 
     </Routes>
     <Footer />
