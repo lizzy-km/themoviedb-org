@@ -49,7 +49,7 @@ const SearchData = () => {
        results?.map(data =>{
            return(
                data ? ( 
-                   <div className=' w-[100%] border-[1px] max-[428px]:items-center max-[428px]:justify-center shadow-lg rounded-lg max-h-[141px] max-[428px]:overflow-auto gap-[1rem] flex ' >
+                   <div className=' w-[100%] border-[1px]  shadow-lg rounded-lg max-h-[141px] overflow-hidden gap-[1rem] flex ' >
                    <Link to={`/overeview/${data.id}`}>
                    <img loading='lazy' className=' blurc object-cover rounded-l-lg min-w-[94px] h-[141px] '  src={`http://image.tmdb.org/t/p/w500/${data.poster_path}`} alt=""/>
 
@@ -59,7 +59,7 @@ const SearchData = () => {
 
                    <p> {data.release_date} </p>
 
-                   <p className='  wb overflow-x-auto ' > {data.overview.slice(0,300)}... </p>
+                   <p className=' leading-5  wb  line-clamp-3 ' > {data.overview.slice(0,300)}... </p>
 
                    </div>
 
@@ -88,7 +88,7 @@ const SearchData = () => {
 
                        <p> {data.first_air_date} </p>
 
-                       <p className='wb ' > {data.overview.slice(0,300)}... </p>
+                       <p className='wb leading-5 line-clamp-3 ' > {data.overview.slice(0,300)}... </p>
 
                        
 
