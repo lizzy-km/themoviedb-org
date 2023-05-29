@@ -705,7 +705,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                  )
                             }
-                              <div className='  bgr  w-[90px] h-[135px]  rounded-lg shadow-lg  '>
+                              <div className='  bgov  w-[90px] h-[135px]  rounded-lg shadow-lg  '>
                                   {review.poster_path ? (
                                   <img loading='lazy' 
                                   className=' min-w-[90px] h-[135px]  object-cover rounded-lg  ' 
@@ -716,7 +716,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                   src={`http://image.tmdb.org/t/p/w500/${review?.backdrop_path}`} alt="" />
                                   )}
                               </div>
-                              <div className=' text-[#ffffff]  bgr h-auto px-[2rem] my-[1.3rem] py-[2rem] '>
+                              <div className=' text-[#ffffff]  bgov h-auto px-[2rem] my-[1.3rem] py-[2rem] '>
                                   <div className=' w-[100%] flex flex-col '>
                                       <h1 className=' text-3xl w-[100%] font-[700] flex flex-col '> {review?.original_title} {review?.original_name} <br/>
                                       {
@@ -872,7 +872,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                       src={`http://image.tmdb.org/t/p/w500/${rt?.backdrop_path}`} alt="" />
                                       )}
                                   </div>
-                                  <div className=' max-[428px]:w-[100%] w-[428px]:bgr max-[428px]:h-auto px-[2rem] py-[1rem] '>
+                                  <div className=' w-[100%] bgr h-auto px-[2rem] py-[1rem] '>
                                       <div className=' flex flex-col max-[428px]:w-[100%] '>
                                          
                                           <h1 className=' text-3xl w-[100%] font-[700] flex flex-col '> {rt?.original_title} {rt?.original_name} <br/>
