@@ -6,7 +6,7 @@ import { State } from '../../context/State'
 
 const Search = ({setSearch,hideSearch}) => {
     const{setResultst,setResults,handleSubmit,query,setQuery,results,resultst,trdata,searchMovies,searchTv} = State()
-    // console.log(trdata);
+  
 
     const[value,setValue] = useState('')
     const handleInputChange = event => {
@@ -50,7 +50,7 @@ const Search = ({setSearch,hideSearch}) => {
                   {
                 results?.map(data =>{
                     return(
-                        <Link onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.title}`} > {data.title} </Link>
+                        <Link key={data?.id} onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.title}`} > {data.title} </Link>
     
                     )
                 })
@@ -58,7 +58,7 @@ const Search = ({setSearch,hideSearch}) => {
             {
                     resultst?.map(data =>{
                         return(
-                            <Link onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.name}`}> {data.name} </Link>
+                            <Link key={data?.id} onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.name}`}> {data.name} </Link>
         
                         )
                     })
@@ -66,7 +66,7 @@ const Search = ({setSearch,hideSearch}) => {
             </div>
           
          ) : ( 
-            <div className=' flex flex-col gap-[1rem] ' >
+            <div   className=' flex flex-col gap-[1rem] ' >
                 <div>
                     <h1 className=' font-semibold text-lg ' > Trending </h1>
                 </div>
@@ -76,19 +76,19 @@ const Search = ({setSearch,hideSearch}) => {
                         {
                             return(
                                 data.original_name ? (
-                                    <Link onClick={'window.location.reload'} to={`/searchresults/${data.original_name}`} > {data.original_name} </Link>
+                                    <Link key={data?.id} onClick={'window.location.reload'} to={`/searchresults/${data.original_name}`} > {data.original_name} </Link>
                                  ) : data.title ? ( 
                                     <div>
                                                                             <Link onClick={'window.location.reload'} to={`/searchresults/${data.title}`} > {data.title} </Link>
 
                                     </div>
                                 ) : data?.name ? (
-                                    <div>
+                                    <div  key={data?.id}>
                                                                             <Link onClick={'window.location.reload'} to={`/searchresults/${data.name}`} > {data.name} </Link>
 
                                     </div>
                                 ) : (
-                                    <div>
+                                    <div  key={data?.id} >
                                         
                                     </div>
                                 )

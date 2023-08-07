@@ -15,7 +15,7 @@ export const StateContextProvider = ({children}) =>{
     const[pudata,setPudata] = useState([])
     const [puwdata,setPuwdata] = useState([])
     const [popular,setPopular] = useState([])
-    // console.log(trending);
+    // // console.log(trending);
 
     useEffect(()=>{
         fetchTrending()
@@ -28,7 +28,7 @@ export const StateContextProvider = ({children}) =>{
     const fetchTrending = async()=>{
         const api = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const {results} = await api.json()
-        // console.log(results);
+        // // console.log(results);
         setTrdata(results)
         setTrending(results)
     }
@@ -37,14 +37,14 @@ export const StateContextProvider = ({children}) =>{
         const api = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=a5abf7e1c956c65d2f3a65f71da4345c
         `)
         const {results} = await api.json()
-        // console.log(results);
+        // // console.log(results);
         setTrwdata(results)
     }
 
     const fetchPopular = async()=>{
         const api = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=a5abf7e1c956c65d2f3a65f71da4345c&language=en-US&page=1`)
         const {results} = await api.json()
-        // console.log(results);
+        // // console.log(results);
         setPudata(results)
         setPopular(results)
     }
@@ -52,7 +52,7 @@ export const StateContextProvider = ({children}) =>{
     const fetchPopularw = async()=>{
         const api = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=a5abf7e1c956c65d2f3a65f71da4345c&language=en-US&page=1`)
         const {results} = await api.json()
-        // console.log(results);
+        // // console.log(results);
         setPuwdata(results)
     }
 
@@ -69,7 +69,7 @@ export const StateContextProvider = ({children}) =>{
     const fetchOvereview = async ()=>{
         const api = await fetch(`    https://api.themoviedb.org/3/movie/${id}?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const results= await api.json()
-        // console.log(results);
+        // // console.log(results);
         setRv(results)
         setReview(results)
     }
@@ -77,7 +77,7 @@ export const StateContextProvider = ({children}) =>{
     const fetchOvereviewTv = async ()=>{
         const api = await fetch(`    https://api.themoviedb.org/3/tv/${id}?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const results= await api.json()
-        // console.log(results);
+        // // console.log(results);
         setRt(results)
     }
 
@@ -116,27 +116,27 @@ export const StateContextProvider = ({children}) =>{
         MvR()
         TvR()
         // fetchLanguage()
-        // console.log(cast);
+        // // console.log(cast);
     }, [id]);
 
 
     const fetchcast = async ()=>{
         const api = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const results= await api.json()
-        // console.log(results);
+        // // console.log(results);
         setCast(results)
     }
     const fetchcastTv = async ()=>{
         const api = await fetch(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const results= await api.json()
-        // console.log(results);
+        // // console.log(results);
         setCastv(results)
     }
     const[keyword,setKeyword] = useState([])
     const fetchKeyword = async ()=>{
         const api = await fetch(`    https://api.themoviedb.org/3/movie/${id}/keywords?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const {keywords}= await api.json()
-        // console.log(keywords);
+        // // console.log(keywords);
         setKeyword(keywords)
     }
 
@@ -144,7 +144,7 @@ export const StateContextProvider = ({children}) =>{
     const fetchKeywordt = async ()=>{
         const api = await fetch(`    https://api.themoviedb.org/3/tv/${id}/keywords?api_key=a5abf7e1c956c65d2f3a65f71da4345c`)
         const  {results} = await api.json()
-        // console.log(results);
+        // // console.log(results);
         setKeywordt(results)
     }
     const[language,setLanguage] = useState([])
@@ -162,8 +162,8 @@ export const StateContextProvider = ({children}) =>{
   const [resultst, setResultst] = useState([]);
   const[empty,setEmpty] =useState([])
 
-//   console.log(results);
-//   console.log(resultst);
+//   // console.log(results);
+//   // console.log(resultst);
 
   useEffect(()=>{
     searchMovies();
@@ -203,7 +203,7 @@ export const StateContextProvider = ({children}) =>{
     const {results} = await api.json()
     // setResultst(results);
     setGenre(results)
-    // console.log(results);
+    // // console.log(results);
   };
 
   const[gn,setGn] = useState()
@@ -220,7 +220,7 @@ const MvR = async () => {
     const {results} = await api.json()
     // setResultst(results);
     setMvr(results)
-    // console.log(results);
+    // // console.log(results);
   };
 
   const[tvr,setTvr] = useState([])
@@ -229,10 +229,10 @@ const TvR = async () => {
     const {results} = await api.json()
     // setResultst(results);
     setTvr(results)
-    // console.log(results);
+    // // console.log(results);
   };
-  console.log(mvr);
-  console.log(tvr);
+  // console.log(mvr);
+  // console.log(tvr);
   const[MvdataByKeyword,setMvataByKeyword] = useState([])
   const[TvdataByKeyword,setTvataByKeyword] = useState([])
 
@@ -245,7 +245,7 @@ const TvR = async () => {
     const {results} = await api.json()
     // setResultst(results);
     setMvataByKeyword(results)
-    console.log('Keyword'+results);
+    // console.log('Keyword'+results);
   };
 
   const TvdataByKeywords = async () => {
@@ -253,7 +253,7 @@ const TvR = async () => {
     const {results} = await api.json()
     // setResultst(results);
     setTvataByKeyword(results)
-    console.log('Keyword'+results);
+    // console.log('Keyword'+results);
   };
 
   useEffect(()=>{

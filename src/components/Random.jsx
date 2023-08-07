@@ -8,7 +8,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 const Random = () => {
   const{imageUrl,query,setQuery,searchMovies,searchTv} = State()
-  console.log(imageUrl);
+  // console.log(imageUrl);
   const[value,setValue] = useState('')
     const handleInputChange = event => {
         setQuery(event.target.value)

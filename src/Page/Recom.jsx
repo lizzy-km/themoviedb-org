@@ -4,16 +4,13 @@ import { State } from '../context/State';
 
 const Recom = () => {
     const{tvr,mvr} = State()
-    console.log(mvr);
-    console.log(tvr);
-
   return (
     <div className=' flex gap-[1rem] ' >
         {
             mvr ? (
                 mvr?.map(data =>{
                     return(
-                        <div className=' flex flex-col ' >
+                        <div key={data?.id} className=' flex flex-col ' >
                         <Link to={`/overeview/${data?.id}`} className='min-w-[250px] h-[141px] rounded-lg  ' >
                             {
                                 data?.backdrop_path ==null ? (                             <div className=' bg-[#0d253f] hover:blur-sm min-w-[250px] h-[141px] object-cover rounded-lg  ' 

@@ -10,23 +10,21 @@ import { useMediaQuery } from 'react-responsive'
 
 const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,company,setCompany}) => {
 
+    // tvr === TV review 
+    // mvr === Movie review 
     const{setGn,tvr,mvr} = State()
     const castData = cast.cast
 
-    console.log(tvr?.length);
-    console.log(mvr?.length);
-
-    console.log(tvr);
-    console.log(mvr);
+    
 
 
     const castCrew = cast.crew
 
-    // console.log(castCrew);
+    // cactDataV === casts from Tv show
 
     const castDatav = castv.cast
 
-    // console.log(castDatav);
+    // castCerwv === crew from Tv show
 
     const castCrewv = castv.crew
 
@@ -36,6 +34,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
 
     const nhc =()=>{
         setHeart(ch)
+        
     }
     const chc =()=>{
         setHeart(nh)
@@ -114,7 +113,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                           - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data.name)
                                                   }} to={`/genre/${data?.id}`} className=' px-[.2rem] '> {data.name},</Link>
                                               )
@@ -154,7 +153,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                                 {
                                                     company?.map(data =>{
                                                         return(
-                                                            <div className=' bg-[#ffffff] flex items-center rounded-lg ' >
+                                                            <div key={data?.id} className=' bg-[#ffffff] flex items-center rounded-lg ' >
                                                                 <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
                                                             </div>
                                                         )
@@ -242,7 +241,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                               - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data?.name)
                                                   }} to={`/genre/${data?.id}`} className=' px-[.2rem] '> {data.name},</Link>
                                               )
@@ -421,7 +420,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                           - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data.name)
                                                   }} to={`/genre/${data?.id}`} className=' z-[99999] px-[.2rem] '> {data.name},</Link>
                                               )
@@ -461,7 +460,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                                             {
                                                                 company?.map(data =>{
                                                                     return(
-                                                                        <div className=' bg-[#ffffff] flex items-center rounded-lg ' >
+                                                                        <div key={data?.id} className=' bg-[#ffffff] flex items-center rounded-lg ' >
                                                                             <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
                                                                         </div>
                                                                     )
@@ -573,7 +572,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                               - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data?.name)
                                                   }} to={`/genre/${data?.id}`} className=' px-[.2rem] '> {data.name},</Link>
                                               )
@@ -614,13 +613,13 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                                             return(
                                                                 
                                                                     data?.logo_path ? (
-                                                                        <div className='  bg-[#ffffff] flex items-center rounded-lg ' >
+                                                                        <div key={data?.id} className='  bg-[#ffffff] flex items-center rounded-lg ' >
                                                                         <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
                     
                     
                                                                         </div>
                                                                     ) : (
-                                                                        <div className=' bg-[#111111] text-[#01b4e4]  w-auto h-[3rem] p-[.4rem] text-sm font-medium  flex items-center rounded-lg ' >
+                                                                        <div key={data?.id} className=' bg-[#111111] text-[#01b4e4]  w-auto h-[3rem] p-[.4rem] text-sm font-medium  flex items-center rounded-lg ' >
                                                                         {/* <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/> */}
                                                                                 {data?.name}
                     
@@ -752,7 +751,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                           - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data.name)
                                                   }} to={`/genre/${data?.id}`} className=' z-[99999] px-[.2rem] '> {data.name},</Link>
                                               )
@@ -772,7 +771,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                           {heart}
                                       </div>
         
-                                      <div className=' pt-[1rem] text-[.7rem] max-[428px]:text-[#111111] tag font-medium text-[#b4b4b4] '>
+                                      <div className=' pt-[1rem] text-[.7rem]  tag font-medium text-[#b4b4b4] '>
                                           {review?.tagline}
                                       </div>
         
@@ -784,7 +783,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                       </div>
                                                     {
                                                             company &&  <div className=' flex gap-[1rem] mt-[4rem] text-center  ' >
-                                                            <div className=' flex items-center ' >
+                                                            <div className=' flex items-center text-sm ' >
                                                             <p> Production by</p>
                             
                                                             </div>
@@ -792,9 +791,9 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                                             {
                                                                 company?.map(data =>{
                                                                     return(
-                                                                        <div className=' bg-[#ffffff] flex items-center rounded-lg ' >
-                                                                            <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
-                                                                        </div>
+                                                                        <div key={data?.id} className=' w-[42px] h-[42px] bg-[#ffffff] flex items-center rounded-full ' >
+                                                                            <img className='w-[42px] h-[42px] object-cover  rounded-full p-[.1rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
+                                                                        </div>  
                                                                     )
                                                                 })
                                                             }
@@ -904,7 +903,7 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
         
                                               - {gen?.map(data => {
                                               return (
-                                                  <Link onClick={()=>{
+                                                  <Link key={data?.id} onClick={()=>{
                                                     setGn(data?.name)
                                                   }} to={`/genre/${data?.id}`} className=' px-[.2rem] '> {data.name},</Link>
                                               )
@@ -945,13 +944,13 @@ const Review = ({castv,cast,review,rt,country,gen,er,minutesToHours,min,mt,compa
                                                             return(
                                                                 
                                                                     data?.logo_path ? (
-                                                                        <div className='  bg-[#ffffff] flex items-center rounded-lg ' >
-                                                                        <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
+                                                                        <div key={data?.id} className='  bg-[#ffffff] flex items-center rounded-full w-[42px] h-[42px] ' >
+                                                                        <img className=' w-[42px] h-[42px] rounded-full object-cover p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
                     
                     
                                                                         </div>
                                                                     ) : (
-                                                                        <div className=' bg-[#111111] text-[#01b4e4]  w-auto h-[3rem] p-[.4rem] text-sm font-medium  flex items-center rounded-lg ' >
+                                                                        <div key={data?.id} className=' bg-[#111111] text-[#01b4e4]  w-auto h-[3rem] p-[.4rem] text-sm font-medium  flex items-center rounded-lg ' >
                                                                         {/* <img className=' w-[4rem] rounded-lg p-[.2rem] '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/> */}
                                                                                 {data?.name}
                     

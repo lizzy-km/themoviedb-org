@@ -8,7 +8,6 @@ const Genre = () => {
     const{setGenreId,genre,gn} = State()
     setGenreId(id)
     // Genre()
-    console.log(genre);
   return (
     <div className=' flex flex-col justify-center items-center ' >
         <div className='   flex items-center bg-[#0d253f] rounded-b-lg font-[700] w-[90%] p-[1rem] justify-center border-b-2 border-[#0d253f]  text-lg ' >
@@ -17,7 +16,7 @@ const Genre = () => {
         <div className=' justify-center flex w-[100%] flex-wrap p-[1rem] gap-[1rem] ' >
        {genre?.map(data =>{
         return(
-            <div className=' shadow-lg rounded-lg  ' >
+            <div key={data?.id} className=' shadow-lg rounded-lg  ' >
                  <div key={data.id}
                className=' relative ovh w-[150px] h-[313px] ' >
               <div className=' z-[1]  blurc object-cover bg-slate-300 rounded-lg min-w-[150px] h-[225px] '   >

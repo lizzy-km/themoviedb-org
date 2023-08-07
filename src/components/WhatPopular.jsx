@@ -18,7 +18,7 @@ const WhatPopular = () => {
 
 
   const {popular,pudata,puwdata,setPopular,fetchPopular,fetchPopularw,rv,rt,setReview,mt,setMt} = State()
-  console.log(popular);
+  // console.log(popular);
   return (
     <div className=' px-[3rem] py-[2rem] gap-[1rem] tranding flex flex-col w-[100%] h-[28rem] ' >
 

@@ -10,15 +10,13 @@ const DataByKeyword = () => {
     setKeywords(keyword)
     // setKeywordsS(keydords2)
 
-    console.log(MvdataByKeyword);
-
   return (
     <div className=' flex flex-wrap gap-[1rem] p-[1rem] justify-center ' >
     { 
     MvdataByKeyword &&
     MvdataByKeyword?.map(data =>{
       return(
-          <div className=' shadow-lg rounded-lg  ' >
+          <div key={data?.id} className=' shadow-lg rounded-lg  ' >
                <div key={data.id}
              className=' relative ovh w-[150px] h-[313px] ' >
             <div className=' z-[1]  blurc object-cover bg-slate-300 rounded-lg min-w-[150px] h-[225px] '   >

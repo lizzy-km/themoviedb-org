@@ -4,12 +4,11 @@ import { State } from '../context/State'
 
 const Movies = () => {
     const{pudata}=State()
-    console.log(pudata);
   return (
     <div className=' flex flex-wrap gap-[1rem] p-[1rem] justify-center ' >
       {pudata?.map(data =>{
         return(
-            <div className=' shadow-lg rounded-lg  ' >
+            <div key={data?.id} className=' shadow-lg rounded-lg  ' >
                  <div key={data.id}
                className=' relative ovh w-[150px] h-[313px] ' >
               <div className=' z-[1]  blurc object-cover bg-slate-300 rounded-lg min-w-[150px] h-[225px] '   >
