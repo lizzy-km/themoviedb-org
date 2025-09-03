@@ -15,18 +15,19 @@ const index = () => {
 
   return (
     <div className=' overflow-x-hidden w-[100%] h-auto flex flex-col  items-center ' >
-      {
-        isDesktop &&       <Random/>
+        <Random/>
+      {/*{*/}
+      {/*  isDesktop &&       <Random/>*/}
 
-      }{
-        isTablet &&       <Random/>
+      {/*}{*/}
+      {/*  isTablet &&       <Random/>*/}
 
-      }{
-        isMobile && <RandomM/>
-      }
+      {/*}{*/}
+      {/*  isMobile && <RandomM/>*/}
+      {/*}*/}
       <Tranding/>
-      <LatestTrailers/>
-      <WhatPopular/>
+      {/*<LatestTrailers/>*/}
+      {/*<WhatPopular/>*/}
       <div className=' h-[10rem] ' >
         
       </div>

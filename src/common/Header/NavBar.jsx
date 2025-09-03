@@ -10,8 +10,22 @@ const NavBar = () => {
 
     const showSearch='flex z-[99999] bg-white flex justtify-center pl-[2rem] items-center absolute w-[100%] top-[100%]'
     const hideSearch='none absolute w-[100%] top-[54%]'
-    const[search,setSearch] = useState(hideSearch)
-    const{handleSubmit,fetchPopular,fetchPopularw,fetchTrending,setQuery} = State()
+
+    const[search,setSearch] = useState(false)
+
+    // const{handleSubmit,fetchPopular,fetchPopularw,fetchTrending,setQuery} = State()
+
+    function fetchPopularMovie(){
+
+    }
+
+    function fetchPopularTv(){
+
+    }
+
+    function fetchTrending(){
+
+    }
 
     const mnav ='  max-[428px]:absolute left-[-60%] top-[170%] max-[428px]:pb-[1rem] max-[428px]:px-[1rem]  max-[428px]:text-[#ffffff] max-[428px]:bg-[#0d253f] max-[428px]:w-[26.99rem] max-[428px]:z-[99999]  max-[428px]:flex-col tracking-wider font-semibold text-slate-200 flex gap-[1rem]' 
     const dnav ='  max-[428px]:hidden    tracking-wider font-semibold text-slate-200 flex gap-[1rem]' 
@@ -55,13 +69,13 @@ const[cnav,setCnav] = useState(omenu)
             // ' max-[428px]:absolute left-[-60%] top-[170%] max-[428px]:pb-[1rem] max-[428px]:px-[1rem]  max-[428px]:text-[#ffffff] max-[428px]:bg-[#0d253f] max-[428px]:w-[26.99rem] max-[428px]:z-[99999]  max-[428px]:flex-col tracking-wider font-semibold text-slate-200 flex gap-[1rem]   ' 
             >
             <NavLink className=' pl-[2rem] ' onClick={()=>{
-                    fetchPopular()
+                    fetchPopularMovie()
                     window.location.reload
                     
                 }} to={'/movies'} >Movies </NavLink>
                 <NavLink className=' pl-[2rem] '
                 onClick={()=>{
-                    fetchPopularw()
+                    fetchPopularTv()
                     window.location.reload
 
                    
@@ -77,7 +91,7 @@ const[cnav,setCnav] = useState(omenu)
         <div className=' cursor-pointer flex justify-center items-center text-slate-50 font-semibold p-[2rem] ' >
             <div onClick={()=>{
                 return(
-                    setSearch(showSearch)
+                    setSearch(!search)
                    
                 )
                
@@ -97,10 +111,10 @@ const[cnav,setCnav] = useState(omenu)
             
         </div>
         </div>
-        <div className={search} >
+        <div className='flex z-[99999] bg-white justtify-center pl-[2rem] items-center absolute w-[100%] top-[100%]' >
             
 
-        <Search setSearch={setSearch} hideSearch={hideSearch} className='search  ' />
+        <Search setSearch={setSearch} search={search}  className='search  ' />
 
         </div>
         
