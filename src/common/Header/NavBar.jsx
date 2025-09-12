@@ -8,8 +8,7 @@ import {RxHamburgerMenu,RxCross2} from 'react-icons/rx'
 
 const NavBar = () => {
 
-    const showSearch='flex z-[99999] bg-white flex justtify-center pl-[2rem] items-center absolute w-[100%] top-[100%]'
-    const hideSearch='none absolute w-[100%] top-[54%]'
+
 
     const[search,setSearch] = useState(false)
 

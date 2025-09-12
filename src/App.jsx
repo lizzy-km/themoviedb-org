@@ -11,7 +11,6 @@ const {mutate,data} = useGet24Changes('person','GET',1)
     mutate()
     }, [mutate]);
 
-console.log(data)
 
   return (
     <div className=" w-[100%] m-0 p-0 flex   h-auto">
