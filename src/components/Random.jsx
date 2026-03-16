@@ -8,8 +8,8 @@ import {debounce} from "lodash/function.js";
 
 
 const Random = () => {
-  // const{imageUrl,query,setQuery,searchMovies,searchTv} = State()
-  // console.log(imageUrl);
+  const{imageUrl,query,setQuery,searchMovies,searchTv} = State()
+  console.log(imageUrl);
   const[value,setValue] = useState('')
 
     const handleInputChange = event => {

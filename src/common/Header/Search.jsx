@@ -1,15 +1,12 @@
-import {Input} from '@mantine/core';
-import React, {useEffect, useState} from 'react'
-import {AiOutlineSearch} from 'react-icons/ai';
-import {Link} from 'react-router-dom';
-import {State} from '../../context/State'
-import {debounce} from "lodash";
-import {useGetTrending, useSearchData} from "../../services/mutation/commonMutation.js";
+import { Input } from '@mantine/core';
+import React, { useState } from 'react'
+import { AiOutlineSearch } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { State } from '../../context/State'
 
-const Search = ({search, setSearch}) => {
-
-    // const{setResultst,setResults,handleSubmit,query,setQuery,results,resultst,trdata,searchMovies,searchTv} = State()
-
+const Search = ({setSearch,hideSearch}) => {
+    const{setResultst,setResults,handleSubmit,query,setQuery,results,resultst,trdata,searchMovies,searchTv} = State()
+    // console.log(trdata);
 
     const [value, setValue] = useState('')
 
@@ -53,46 +50,67 @@ const Search = ({search, setSearch}) => {
 
                 </div>
 
+    </div>
+    <div className=' absolute top-[100%] max-h-[20rem] overflow-auto flex flex-col gap-[.5rem] bg-[#ffffff] w-[100%] p-[1rem] ' >
+       {
+        query ? (
+            <div className=' flex flex-col gap-[.4rem] ' >
+                  {
+                results?.map(data =>{
+                    return(
+                        <Link onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.title}`} > {data.title} </Link>
+    
+                    )
+                })
+            }
+            {
+                    resultst?.map(data =>{
+                        return(
+                            <Link onClick={'window.location.reload'} className=' p-[.2rem] ' to={`/searchresults/${data.name}`}> {data.name} </Link>
+        
+                        )
+                    })
+            }
             </div>
-            {search && <div
-                className=' absolute top-[100%] max-h-[20rem] overflow-auto flex flex-col gap-[.5rem] bg-[#ffffff] w-[100%] p-[1rem] '>
-                {value ? (<div className=' flex flex-col gap-[.4rem] '>
-                        {results?.map(data => {
-                            return (<Link key={data?.id} onClick={'window.location.reload'} className=' p-[.2rem] border-b w-full flex justify-items-start items-center '
-                                          to={`/searchresults/${data.title?? data?.original_name}`}> {data.title?? data?.original_name} </Link>
-
-                            )
-                        })}
-                    </div>
-
-                ) : (<div className=' flex flex-col justify-items-start items-start gap-[1rem] '>
-                        <div>
-                            <h1 className=' border-b font-semibold text-lg '> Trending </h1>
-                        </div>
+          
+         ) : ( 
+            <div className=' flex flex-col gap-[1rem] ' >
+                <div>
+                    <h1 className=' font-semibold text-lg ' > Trending </h1>
+                </div>
+                {
+                    
+                    trdata?.map(data =>{
                         {
+                            return(
+                                data.original_name ? (
+                                    <Link onClick={'window.location.reload'} to={`/searchresults/${data.original_name}`} > {data.original_name} </Link>
+                                 ) : data.title ? ( 
+                                    <div>
+                                                                            <Link onClick={'window.location.reload'} to={`/searchresults/${data.title}`} > {data.title} </Link>
 
-                            trdata?.map(data => {
-                                {
-                                    return (data.original_name ? (
-                                            <Link className={' border-b w-full justify-items-start items-center '} key={data?.id} onClick={'window.location.reload'}
-                                                  to={`/searchresults/${data.original_name}`}> {data.original_name} </Link>) : data.title ? (
-                                            <div className={' border-b '}>
-                                                <Link  onClick={'window.location.reload'}
-                                                      to={`/searchresults/${data.title}`}> {data.title} </Link>
+                                    </div>
+                                ) : data?.name ? (
+                                    <div>
+                                                                            <Link onClick={'window.location.reload'} to={`/searchresults/${data.name}`} > {data.name} </Link>
 
-                                            </div>) : data?.name ? (<div className={' border-b '} key={data?.id}>
-                                                <Link  onClick={'window.location.reload'}
-                                                      to={`/searchresults/${data.name}`}> {data.name} </Link>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        
+                                    </div>
+                                )
+                            )
+                        }
 
-                                            </div>) : (<div key={data?.id}>
-
-                                            </div>))
-                                }
-
-
-                            })}
-                    </div>)}
-
+                        
+                        
+                            
+                           
+                           
+                        
+                    })
+                }
             </div>
 
             }

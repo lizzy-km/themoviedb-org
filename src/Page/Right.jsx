@@ -4,7 +4,8 @@ import { State } from '../context/State'
 import { useNavigate } from 'react-router-dom'
 const Right = ({review,rt}) => {
     const{keyword,keywordt,lant,setLant,lan,setLan,language,setLanguage} = State()
-    
+    // console.log(review);
+    console.log(keyword);
     const nav = useNavigate()
    const navKey =()=>{
     // nav(`/keyword/${keyword?.at(0).id}`)
