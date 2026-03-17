@@ -8,11 +8,6 @@ const Search = ({setSearch,hideSearch}) => {
     const{setResultst,setResults,handleSubmit,query,setQuery,results,resultst,trdata,searchMovies,searchTv} = State()
     // console.log(trdata);
 
-    const [value, setValue] = useState('')
-
-    const {data: trdata, mutate: fetchTrending} = useGetTrending('all/day', 'get', 1)
-
-
     const {data: results, mutate} = useSearchData(`multi`, value, 1)
 
     const handleInputChange = event => {
