@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { State } from '../context/State'
 
 const Tcard = ({data,name}) => {
-    // const {setId,fetchOvereview,fetchOvereviewTv,rv,rt,setReview,mt,setMt} = State()
 
     const id = data?.id;
 

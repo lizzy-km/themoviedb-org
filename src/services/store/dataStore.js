@@ -1,6 +1,6 @@
 import {create} from "zustand";
 
-export const DataStore = create((set)=>({
+export const DataStore = create(()=>({
     // Changes
     changesMovieList:[],
     changesTVList:[],
@@ -55,6 +55,12 @@ export const DataStore = create((set)=>({
     //Review
     review:{},
 
+    //Search
+
+    query:"",
+    setQuery:((state,value)=>{
+        state.query = value
+    })
 
 
 }));

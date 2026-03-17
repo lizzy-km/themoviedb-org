@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {State} from '../context/State'
 import Tcard from './Tcard'
 import './tranding.css'
 import {useGetTrending} from "../services/mutation/commonMutation.js";

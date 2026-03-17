@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { State } from '../context/State'
-import { useNavigate } from 'react-router-dom'
+import {  StateG } from '../context/State'
 const Right = ({review,rt}) => {
-    const{keyword,keywordt,lant,setLant,lan,setLan,language,setLanguage} = State()
+    const{keyword,keywordt,language,setLanguage} = StateG()
     // console.log(review);
     console.log(keyword);
-    const nav = useNavigate()
+    // const nav = useNavigate()
    const navKey =()=>{
     // nav(`/keyword/${keyword?.at(0).id}`)
     // nav('/')
@@ -57,7 +55,7 @@ const Right = ({review,rt}) => {
         <div className=' flex flex-wrap gap-[.4rem] w-[17rem] ' >
         {language?.map(data =>{
             return(
-                <p className=' bg-[#c1c1c1c7] p-[.3rem] rounded-[4px] w-auto ' > {data.english_name} </p>
+                <p key={data.id} className=' bg-[#c1c1c1c7] p-[.3rem] rounded-[4px] w-auto ' > {data.english_name} </p>
             )
         })}
         </div>
@@ -83,7 +81,7 @@ const Right = ({review,rt}) => {
                     
                          {network?.map(data =>{
                             return(
-                                <img className=' w-[10rem] object-cover '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
+                                <img key={data.id} className=' w-[10rem] object-cover '  src={`http://image.tmdb.org/t/p/w500/${data?.logo_path}`} alt=""/>
                             )
                         })}
                     
@@ -145,7 +143,7 @@ const Right = ({review,rt}) => {
                        {
                              keyword?.map(data =>{
                                  return(
-                                     <Link to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
+                                     <Link key={data.id} to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
                                          <p> {data.name} </p>
                                      </Link>
                                  )
@@ -173,7 +171,7 @@ const Right = ({review,rt}) => {
                        {
                              keywordt?.map(data =>{
                                  return(
-                                     <Link to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
+                                     <Link key={data.id} to={`/keyword/${data?.id}`} onClick={navKey} className=' bg-[#c1c1c1c7] rounded-[4px] p-[.5rem] flex items-center w-auto h-[1.7rem] text-sm cursor-pointer ' >
                                          <p> {data.name} </p>
                                      </Link>
                                  )

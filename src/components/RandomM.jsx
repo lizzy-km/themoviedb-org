@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { State } from '../context/State'
 import './tranding.css'
 import { Input } from '@mantine/core';
 import { AiOutlineSearch } from 'react-icons/ai';

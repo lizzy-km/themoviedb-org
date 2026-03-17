@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
@@ -14,6 +13,7 @@ import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import DataByKeyword from './Page/DataByKeyword'
+import { StateContextProvider } from './context/State'
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,8 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')).render(
 
       <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+        <StateContextProvider >
+  <BrowserRouter>
           <MantineProvider withGlobalStyles withNormalizeCSS >
               <NavBar  />
               <div className='  flex flex-col w-[100%] h-screen overflow-y-auto ' >
@@ -37,10 +38,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                       <Route exact path={`/keyword/:keyword`} element={<DataByKeyword />} />
 
                   </Routes>
-                  {/*<Footer />*/}
+                  <Footer />
               </div>
           </MantineProvider>
           </BrowserRouter>
+        </StateContextProvider>
+        
       </QueryClientProvider>
 
   

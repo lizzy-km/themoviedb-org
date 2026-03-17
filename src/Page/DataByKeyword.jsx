@@ -1,11 +1,10 @@
-import React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { State } from '../context/State'
+import {  StateG } from '../context/State'
 
 const DataByKeyword = () => {
 
     const {keyword} = useParams()
-    const{TvdataByKeyword,setKeywordsS,fetchOvereview,fetchOvereviewTv,setKeywords,MvdataByKeyword} = State()
+    const{TvdataByKeyword,fetchOvereview,fetchOvereviewTv,setKeywords,MvdataByKeyword} = StateG()
     console.log(keyword);
     setKeywords(keyword)
     // setKeywordsS(keydords2)
@@ -18,7 +17,7 @@ const DataByKeyword = () => {
     MvdataByKeyword &&
     MvdataByKeyword?.map(data =>{
       return(
-          <div className=' shadow-lg rounded-lg  ' >
+          <div key={data.id} className=' shadow-lg rounded-lg  ' >
                <div key={data.id}
              className=' relative ovh w-[150px] h-[313px] ' >
             <div className=' z-[1]  blurc object-cover bg-slate-300 rounded-lg min-w-[150px] h-[225px] '   >
@@ -51,7 +50,7 @@ const DataByKeyword = () => {
         TvdataByKeyword && 
         TvdataByKeyword?.map(data =>{
             return(
-                <div className=' shadow-lg rounded-lg  ' >
+                <div key={data.id} className=' shadow-lg rounded-lg  ' >
                      <div key={data.id}
                    className=' relative ovh w-[150px] h-[313px] ' >
                   <div className=' z-[1]  blurc object-cover bg-slate-300 rounded-lg min-w-[150px] h-[225px] '   >

@@ -1,11 +1,8 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { State } from '../context/State';
+import { StateG } from '../context/State'
 
 const Recom = () => {
-    const{tvr,mvr} = State()
-    console.log(mvr);
-    console.log(tvr);
+    const{tvr,mvr} = StateG()
 
   return (
     <div className=' flex gap-[1rem] ' >
@@ -13,7 +10,7 @@ const Recom = () => {
             mvr ? (
                 mvr?.map(data =>{
                     return(
-                        <div className=' flex flex-col ' >
+                        <div key={data.id} className=' flex flex-col ' >
                         <Link to={`/overeview/${data?.id}`} className='min-w-[250px] h-[141px] rounded-lg  ' >
                             {
                                 data?.backdrop_path ==null ? (                             <div className=' bg-[#0d253f] hover:blur-sm min-w-[250px] h-[141px] object-cover rounded-lg  ' 
@@ -37,7 +34,7 @@ const Recom = () => {
                  ) : tvr ? (
                         tvr?.map(datat =>{
                             return(
-                                <div className=' flex flex-col   ' >
+                                <div key={datat.id} className=' flex flex-col   ' >
                                 <Link to={`/overeview/${datat?.id}`} className='min-w-[250px] h-[141px] rounded-lg  ' >
                                     
                                         { 

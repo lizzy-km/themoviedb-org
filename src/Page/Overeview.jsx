@@ -1,74 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import { createUseStyles } from 'react-jss'
-import { Link, useParams } from 'react-router-dom'
-import { State } from '../context/State'
+
+import { useParams } from 'react-router-dom'
+import {  StateG } from '../context/State'
 import './index.css'
 import Review from './Review'
+import { useEffect } from 'react'
 
 const Overeview = () => {
-    // const id = review.id;
-    const {ids} = useParams()
-    
-    const {company,setCompany,castv,cast,er,setEr,gen,setGen,country,setCountry,id,setId,rv,rt,fetchOvereview,fetchOvereviewTv,setReview,review,mt} = State()
+  // const id = review.id;
+  const { ids } = useParams()
+
+  const { company, setCompany, castv, cast, er, setEr, gen, setGen, country, setCountry, setId, rt, review, mt } = StateG()
+  useEffect(() => {
     setId(ids);
+  }, [])
 
 
-    
 
-  
-        
-       
-    
-    function minutesToHours(minutes) {
-        var hours = Math.floor(minutes / 60); // get the whole number of hours
-        var remainingMinutes = minutes % 60; // get the remaining minutes
-        return hours + "h " + remainingMinutes + "m";
-      }
+  function minutesToHours(minutes) {
+    var hours = Math.floor(minutes / 60); // get the whole number of hours
+    var remainingMinutes = minutes % 60; // get the remaining minutes
+    return hours + "h " + remainingMinutes + "m";
+  }
 
-      const min = review?.runtime;
-      setEr(review?.episode_run_time)
+  const min = review?.runtime;
+  setEr(review?.episode_run_time)
 
-    //   console.log(review.runtime);
+  //   console.log(review.runtime);
 
-//    const country = review.production_countries
-      
+  //    const country = review.production_countries
 
- setCountry(review?.production_countries)
- console.log(country);
- if(review.id){
+
+  setCountry(review?.production_countries)
+  console.log(country);
+  if (review.id) {
     setGen(review?.genres)
     setEr(review?.episode_run_time)
     // setType('movie')
 
 
- }else{
+  } else {
     setGen(rt?.genres)
     setEr(rt?.episode_run_time)
     // setType('tv')
 
- }
-//   const g= gen.map(data =>{
-//     return(
-//         console.log(data)
-//     )
-//  })
-    // console.log(gen);
+  }
+  //   const g= gen.map(data =>{
+  //     return(
+  //         console.log(data)
+  //     )
+  //  })
+  // console.log(gen);
 
 
 
 
   return (
-    <div  className={' w-[100%]  tracking-wider '} >  
+    <div className={' w-[100%]  tracking-wider '} >
 
-        
-            <Review mt={mt} cast={cast} company={company} setCompany={setCompany} castv={castv} country={country} minutesToHours={minutesToHours} min={min} gen={gen} rt={rt} review={review} er={er} />
-      
-       
-    
+
+      <Review mt={mt} cast={cast} company={company} setCompany={setCompany} castv={castv} country={country} minutesToHours={minutesToHours} min={min} gen={gen} rt={rt} review={review} er={er} />
+
+
+
     </div>
-    
-   
+
+
   )
 }
 
