@@ -15,6 +15,12 @@ export interface TitleCardProps {
   subtitle?: string | undefined
   /** Load the poster eagerly — only for the first few above-the-fold cards. */
   priority?: boolean
+  /**
+   * `carousel` gives the card a fixed width for horizontal scroll rows;
+   * `fluid` lets it fill a grid cell. Set explicitly rather than relying on
+   * className order, which Tailwind does not resolve deterministically.
+   */
+  layout?: 'carousel' | 'fluid'
   className?: string
 }
 
@@ -34,6 +40,7 @@ export const TitleCard = memo(function TitleCard({
   title,
   subtitle,
   priority = false,
+  layout = 'carousel',
   className,
 }: TitleCardProps) {
   const href = `/${title.mediaType}/${title.id}`
@@ -59,7 +66,13 @@ export const TitleCard = memo(function TitleCard({
   const handleWatchlist = useCallback(() => toggle('watchlist', entry), [toggle, entry])
 
   return (
-    <article className={cn('group/card w-[150px] shrink-0 sm:w-[170px]', className)}>
+    <article
+      className={cn(
+        'group/card',
+        layout === 'carousel' ? 'w-[150px] shrink-0 sm:w-[170px]' : 'w-full',
+        className,
+      )}
+    >
       <div className="relative">
         <Link
           to={href}
@@ -69,7 +82,11 @@ export const TitleCard = memo(function TitleCard({
           <Image
             src={posterUrl(title.posterPath, 'w342')}
             srcSet={posterSrcSet(title.posterPath)}
-            sizes="(max-width: 640px) 150px, 170px"
+            sizes={
+              layout === 'carousel'
+                ? '(max-width: 640px) 150px, 170px'
+                : '(max-width: 420px) 45vw, (max-width: 640px) 30vw, (max-width: 1024px) 22vw, 200px'
+            }
             alt={`${title.title} poster`}
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : undefined}

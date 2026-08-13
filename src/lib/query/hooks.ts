@@ -72,7 +72,7 @@ export function useInfiniteTvList(category: TvListCategory) {
 
 /* -------------------------------------------------------------------- detail */
 
-export function useMovieDetail(id: number | undefined) {
+export function useMovieDetail(id: number | null | undefined) {
   return useQuery({
     queryKey: queryKeys.movies.detail(id ?? 0),
     queryFn: ({ signal }) => api.getMovieDetail(id as number, signal),
@@ -80,7 +80,7 @@ export function useMovieDetail(id: number | undefined) {
   })
 }
 
-export function useTvDetail(id: number | undefined) {
+export function useTvDetail(id: number | null | undefined) {
   return useQuery({
     queryKey: queryKeys.tv.detail(id ?? 0),
     queryFn: ({ signal }) => api.getTvDetail(id as number, signal),
@@ -107,7 +107,7 @@ export function useInfinitePopularPeople() {
   })
 }
 
-export function usePersonDetail(id: number | undefined) {
+export function usePersonDetail(id: number | null | undefined) {
   return useQuery({
     queryKey: queryKeys.people.detail(id ?? 0),
     queryFn: ({ signal }) => api.getPersonDetail(id as number, signal),
@@ -189,7 +189,7 @@ export function useGenres(mediaType: TitleMediaType) {
   })
 }
 
-export function useKeyword(id: number | undefined) {
+export function useKeyword(id: number | null | undefined) {
   return useQuery({
     queryKey: queryKeys.keywords.detail(id ?? 0),
     queryFn: ({ signal }) => api.getKeyword(id as number, signal),
@@ -200,7 +200,7 @@ export function useKeyword(id: number | undefined) {
 
 /* -------------------------------------------------------------------- videos */
 
-export function useVideos(mediaType: TitleMediaType, id: number | undefined) {
+export function useVideos(mediaType: TitleMediaType, id: number | null | undefined) {
   return useQuery({
     queryKey: queryKeys.videos.list(mediaType, id ?? 0),
     queryFn: ({ signal }) => api.getVideos(mediaType, id as number, signal),

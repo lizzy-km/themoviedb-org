@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { AlertIcon } from '@/components/ui/icons'
-import { TmdbError } from '@/lib/tmdb/client'
+import { describeError, isNotFoundError } from '@/lib/utils/errors'
 
 export interface ErrorStateProps {
   error?: unknown
@@ -9,28 +9,18 @@ export interface ErrorStateProps {
   title?: string
 }
 
-/** Turns an unknown thrown value into a message worth showing a user. */
-export function describeError(error: unknown): string {
-  if (error instanceof TmdbError) return error.message
-  if (error instanceof Error) {
-    return navigator.onLine
-      ? error.message
-      : 'You appear to be offline. Check your connection and try again.'
-  }
-  return 'An unexpected error occurred.'
-}
-
+/** Inline failure panel for a query that errored. */
 export function ErrorState({ error, onRetry, title = 'Something went wrong' }: ErrorStateProps) {
   // A 404 is a missing title, not a failure — say so plainly and don't offer retry.
-  const isNotFound = error instanceof TmdbError && error.status === 404
+  const notFound = isNotFoundError(error)
 
   return (
     <EmptyState
       icon={<AlertIcon size={40} strokeWidth={1.5} className="text-danger" />}
-      title={isNotFound ? 'Not found' : title}
+      title={notFound ? 'Not found' : title}
       description={describeError(error)}
       action={
-        onRetry && !isNotFound ? (
+        onRetry && !notFound ? (
           <Button variant="outline" onClick={onRetry}>
             Try again
           </Button>

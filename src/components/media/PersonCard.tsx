@@ -10,6 +10,8 @@ export interface PersonCardProps {
   profilePath: string | null
   /** Character name for cast lists, or "known for" on the people index. */
   subtitle?: string | undefined
+  /** `carousel` fixes the width for scroll rows; `fluid` fills a grid cell. */
+  layout?: 'carousel' | 'fluid'
   className?: string
 }
 
@@ -18,12 +20,19 @@ export const PersonCard = memo(function PersonCard({
   name,
   profilePath,
   subtitle,
+  layout = 'carousel',
   className,
 }: PersonCardProps) {
   const href = `/person/${id}`
 
   return (
-    <article className={cn('group/person w-[140px] shrink-0', className)}>
+    <article
+      className={cn(
+        'group/person',
+        layout === 'carousel' ? 'w-[140px] shrink-0' : 'w-full',
+        className,
+      )}
+    >
       <Link
         to={href}
         className="block overflow-hidden rounded-card"
