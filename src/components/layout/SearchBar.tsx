@@ -185,7 +185,7 @@ export function SearchBar({
       {showDropdown && (
         <div
           className={cn(
-            'absolute left-0 right-0 top-[calc(100%+0.5rem)] z-40 overflow-hidden',
+            'absolute z-40 left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden',
             'rounded-xl border border-border bg-surface shadow-panel animate-fade-in',
           )}
         >

@@ -25,7 +25,7 @@ export function Hero() {
   }, [trending])
 
   return (
-    <section className="relative isolate overflow-hidden bg-navy text-white">
+    <section className="relative bg-transparent text-white">
       {backdropPath && (
         <img
           src={backdropUrl(backdropPath, 'w1280') ?? undefined}
@@ -38,7 +38,7 @@ export function Hero() {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="absolute inset-0 -z-[10] h-full w-full object-cover"
         />
       )}
       <div className="hero-scrim absolute inset-0 -z-10" aria-hidden="true" />
