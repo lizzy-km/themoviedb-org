@@ -1,0 +1,119 @@
+@import './theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    /* Prevents horizontal page scroll from any wide child; wide content is
+       expected to scroll inside its own container instead. */
+    overflow-x: hidden;
+  }
+
+  /* Visible, theme-aware focus ring for keyboard users only. The old codebase
+     removed input borders globally and left no focus affordance at all. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-balance font-semibold;
+  }
+
+  img {
+    /* Avoids alt-text sprawl while images load and keeps aspect ratios sane. */
+    @apply max-w-full;
+  }
+
+  /* Slim, themed scrollbars instead of hiding them entirely. */
+  @supports (scrollbar-width: thin) {
+    .scrollbar-slim {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(var(--color-border)) transparent;
+    }
+  }
+
+  .scrollbar-slim::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb:hover {
+    @apply bg-subtle;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Screen-reader-only text (skip links, icon button labels). */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+
+  /* Horizontal scroll row used by every carousel. Snap points make touch
+     swiping land cleanly on a card. */
+  .scroll-row {
+    @apply scrollbar-slim flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-2;
+    scroll-padding-inline: 1rem;
+    /* Promotes to its own layer so scrolling a row never repaints the page. */
+    will-change: scroll-position;
+    overscroll-behavior-x: contain;
+  }
+
+  .scroll-row > * {
+    @apply snap-start;
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, rgb(var(--color-accent)) 0%, rgb(var(--color-brand)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-scrim {
+    background-image: linear-gradient(
+      to right,
+      rgb(var(--color-navy) / 0.92) 0%,
+      rgb(var(--color-navy) / 0.72) 50%,
+      rgb(var(--color-navy) / 0.45) 100%
+    );
+  }
+}

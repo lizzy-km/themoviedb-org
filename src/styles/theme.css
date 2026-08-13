@@ -1,0 +1,86 @@
+/*
+ * Design tokens.
+ *
+ * Every color is defined as a space-separated RGB triple so Tailwind can apply
+ * opacity modifiers (see tailwind.config.cjs).
+ *
+ * Theme resolution order:
+ *   1. :root                                  -> light palette (the default)
+ *   2. @media (prefers-color-scheme: dark)    -> OS preference, only when the
+ *      user has NOT explicitly chosen light
+ *   3. [data-theme="dark"]                    -> explicit user choice wins
+ */
+
+:root {
+  --color-bg: 255 255 255;
+  --color-surface: 255 255 255;
+  --color-surface-2: 244 245 247;
+  --color-border: 226 229 233;
+  --color-fg: 17 17 17;
+  --color-muted: 90 96 104;
+  --color-subtle: 130 137 146;
+
+  --color-brand: 1 180 228;
+  --color-brand-fg: 255 255 255;
+  --color-accent: 30 213 169;
+  --color-navy: 13 37 63;
+
+  --color-success: 33 168 96;
+  --color-warning: 214 152 20;
+  --color-danger: 219 56 56;
+
+  --skeleton-base: 226 229 233;
+  --skeleton-sheen: 241 243 245;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: 11 15 20;
+    --color-surface: 21 27 35;
+    --color-surface-2: 30 38 48;
+    --color-border: 45 55 68;
+    --color-fg: 237 240 243;
+    --color-muted: 158 167 178;
+    --color-subtle: 124 134 146;
+
+    --color-brand: 1 180 228;
+    --color-brand-fg: 4 12 20;
+    --color-accent: 30 213 169;
+    --color-navy: 8 20 34;
+
+    --color-success: 61 199 126;
+    --color-warning: 233 179 51;
+    --color-danger: 240 92 92;
+
+    --skeleton-base: 30 38 48;
+    --skeleton-sheen: 45 55 68;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: 11 15 20;
+  --color-surface: 21 27 35;
+  --color-surface-2: 30 38 48;
+  --color-border: 45 55 68;
+  --color-fg: 237 240 243;
+  --color-muted: 158 167 178;
+  --color-subtle: 124 134 146;
+
+  --color-brand: 1 180 228;
+  --color-brand-fg: 4 12 20;
+  --color-accent: 30 213 169;
+  --color-navy: 8 20 34;
+
+  --color-success: 61 199 126;
+  --color-warning: 233 179 51;
+  --color-danger: 240 92 92;
+
+  --skeleton-base: 30 38 48;
+  --skeleton-sheen: 45 55 68;
+
+  color-scheme: dark;
+}

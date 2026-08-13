@@ -1,13 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chill With Liz</title>
+    <meta name="description" content="Discover millions of movies, TV shows and people. Browse trending titles, search, and build your own watchlist." />
+    <meta name="theme-color" content="#0d253f" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0f14" media="(prefers-color-scheme: dark)" />
+
+    <!-- Warm up the two origins every page hits: the API and the image CDN. -->
+    <link rel="preconnect" href="https://api.themoviedb.org" />
+    <link rel="preconnect" href="https://image.tmdb.org" />
+    <link rel="dns-prefetch" href="https://image.tmdb.org" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <title>Movie Explorer</title>
+
+    <script>
+      // Apply the persisted theme before first paint to avoid a flash of the
+      // wrong palette. Mirrors the shape written by the Zustand theme store.
+      ;(function () {
+        try {
+          var raw = localStorage.getItem('theme-preference')
+          var mode = raw ? JSON.parse(raw).state.mode : 'system'
+          if (mode === 'dark' || mode === 'light') {
+            document.documentElement.dataset.theme = mode
+          }
+        } catch (e) {
+          /* localStorage unavailable (private mode) — fall back to system. */
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

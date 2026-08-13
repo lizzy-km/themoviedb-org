@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# Env files — never commit real credentials. Use .env.example as the template.
+.env
+.env.*
+!.env.example
+
+# Yarn PnP artifacts (project uses npm)
+.pnp.*
+.yarn/*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
