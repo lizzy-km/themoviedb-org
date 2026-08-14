@@ -210,6 +210,44 @@ Run, in this order, and actually read the output:
 6. Clean up any temporary test scripts, screenshots, or ad-hoc dependencies
    installed purely for verification before finishing.
 
+## Phase 6.5 — Common post-rewrite bug patterns
+
+Even after Phase 6 passes, the user will often come back with a visual bug
+report on something that "looks broken" in a specific spot (a dropdown, an
+overlay, a sticky element). These almost always trace to one of a small set
+of CSS interactions that are easy to introduce anywhere overlays sit inside
+themed/colored sections. Check these first before guessing:
+
+- **Overlay clipped or hidden behind sibling content**: the overlay's nearest
+  positioned ancestor has `overflow-hidden` (clips it at that boundary) or
+  `isolate`/`will-change`/a CSS `transform`/`filter` (creates a new stacking
+  context, so the overlay's `z-*` is now compared only against other elements
+  *inside* that context, not the whole page — e.g. it can end up rendering
+  *below* a sticky header that lives outside the context even though its own
+  z-index number is higher). Fix: remove the clipping/stacking-context
+  property from the ancestor if it isn't load-bearing (e.g. an `-z-10`
+  background image usually doesn't need `isolate` — a plain `relative` on the
+  ancestor plus negative z on the background layer is enough).
+- **Invisible text on an overlay rendered inside a dark/colored section**: any
+  span/element inside the overlay that does *not* set its own text-color class
+  will inherit color from the nearest ancestor with one — including a
+  `text-white` hero section several levels up — producing white-on-white (or
+  similarly invisible) text. This is easy to miss because *sibling* elements
+  that do set an explicit color (e.g. a muted secondary line) render fine,
+  making it look like only "half" the content is broken. Fix: set an explicit
+  text-color class on the overlay's outer container as a baseline reset (don't
+  rely on every descendant setting its own), and always give the primary label
+  its own explicit color rather than depending on inheritance.
+- When investigating "looks broken" reports on an overlay, inspect computed
+  style (`getComputedStyle(...).color`, `.zIndex`, bounding box via Playwright
+  `page.evaluate`) rather than guessing from a screenshot alone — a screenshot
+  shows the symptom, computed style shows the cause.
+- If a scratch verification script (Playwright driver, etc.) gets swept into a
+  commit by an IDE auto-save/auto-commit outside your control, it's still
+  fine to delete it in a later commit as normal cleanup — say so plainly if
+  asked, since a git-tracked deletion can look alarming out of context even
+  when it's routine.
+
 ## Phase 7 — Commit discipline
 
 Commit each completed, self-contained layer as its own commit (foundation →
