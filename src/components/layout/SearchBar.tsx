@@ -186,6 +186,10 @@ export function SearchBar({
         <div
           className={cn(
             'absolute z-40 left-0 right-0 top-[calc(100%+0.5rem)] overflow-hidden',
+            // Reset text color explicitly: this dropdown can render under a
+            // dark hero section (text-white ancestor), and any span here that
+            // doesn't set its own color would otherwise inherit white-on-white.
+            'text-fg',
             'rounded-xl border border-border bg-surface shadow-panel animate-fade-in',
           )}
         >
@@ -218,7 +222,7 @@ export function SearchBar({
                       <ItemIcon mediaType={item.media_type} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium">{itemLabel(item)}</span>
+                      <span className="block truncate text-sm font-medium text-fg">{itemLabel(item)}</span>
                       <span className="block truncate text-xs text-muted">{itemMeta(item)}</span>
                     </span>
                   </button>
