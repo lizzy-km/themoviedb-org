@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { SearchBar } from './SearchBar'
 import { ThemeToggle } from './ThemeToggle'
+import { UserMenu } from './UserMenu'
 import { Container } from './Section'
 import { BookmarkIcon, CloseIcon, HeartIcon, MenuIcon, SearchIcon } from '@/components/ui/icons'
 import { useLibraryCounts } from '@/stores/libraryStore'
+import { useAuthStatus } from '@/stores/authStore'
 import { cn } from '@/lib/utils/cn'
 
 interface NavItem {
@@ -30,6 +32,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const { favorites, watchlist } = useLibraryCounts()
+  const authStatus = useAuthStatus()
   const location = useLocation()
 
   // Close both panels on navigation.
@@ -124,6 +127,7 @@ export function Navbar() {
             </LibraryLink>
 
             <ThemeToggle />
+            <UserMenu />
           </div>
         </div>
       </Container>
@@ -160,6 +164,21 @@ export function Navbar() {
                 </NavLink>
               </li>
             ))}
+            {(authStatus === 'signedIn' || authStatus === 'signedOut') && (
+              <li className="mt-1 border-t border-white/10 pt-1">
+                <NavLink
+                  to={authStatus === 'signedIn' ? '/account' : '/login'}
+                  className={({ isActive }) =>
+                    cn(
+                      'block rounded-md px-3 py-3 text-base font-semibold transition-colors',
+                      isActive ? 'bg-white/15 text-white' : 'text-white/85 hover:bg-white/10',
+                    )
+                  }
+                >
+                  {authStatus === 'signedIn' ? 'Account' : 'Log in / Sign up'}
+                </NavLink>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

@@ -29,12 +29,45 @@ export function libraryKey(mediaType: TitleMediaType, id: number): LibraryKey {
   return `${mediaType}:${id}`
 }
 
+export type LibraryMap = Record<LibraryKey, LibraryEntry>
+
+/**
+ * Where a change came from. Sync layers use it to avoid echoing a change back
+ * to the system it arrived from:
+ * - `user`  — a click in this tab; goes to the cloud and to TMDB
+ * - `tmdb`  — imported from a linked TMDB account; goes to the cloud only
+ */
+export type LibraryChangeOrigin = 'user' | 'tmdb'
+
+export type LibraryChange =
+  | { type: 'add'; list: LibraryList; entry: LibraryEntry; origin: LibraryChangeOrigin }
+  | { type: 'remove'; list: LibraryList; entry: LibraryEntry; origin: LibraryChangeOrigin }
+
+type LibraryListener = (change: LibraryChange) => void
+const listeners = new Set<LibraryListener>()
+
+/** Subscribes to user/import-driven library changes. Returns an unsubscribe. */
+export function onLibraryChange(listener: LibraryListener): () => void {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+function emit(change: LibraryChange): void {
+  for (const listener of listeners) listener(change)
+}
+
 interface LibraryState {
-  favorites: Record<LibraryKey, LibraryEntry>
-  watchlist: Record<LibraryKey, LibraryEntry>
+  favorites: LibraryMap
+  watchlist: LibraryMap
   toggle: (list: LibraryList, entry: Omit<LibraryEntry, 'addedAt'>) => void
   remove: (list: LibraryList, mediaType: TitleMediaType, id: number) => void
   clear: (list: LibraryList) => void
+  /** Adds entries that aren't already present (used by imports). Emits `add`. */
+  mergeEntries: (list: LibraryList, entries: LibraryEntry[], origin: LibraryChangeOrigin) => void
+  /** Replaces a list wholesale with server state. Emits nothing. */
+  replaceList: (list: LibraryList, map: LibraryMap) => void
+  /** Empties both lists without emitting — used on sign-out. */
+  reset: () => void
 }
 
 /** Keeps the library-size user properties in sync after every mutation. */
@@ -45,66 +78,91 @@ function syncLibraryUserProperties(state: Pick<LibraryState, LibraryList>): void
   })
 }
 
+function without(map: LibraryMap, key: LibraryKey): LibraryMap {
+  // Rebuild without the key rather than mutating in place.
+  const { [key]: _removed, ...rest } = map
+  return rest
+}
+
 export const useLibraryStore = create<LibraryState>()(
   persist(
     (set, get) => ({
       favorites: {},
       watchlist: {},
 
-      toggle: (list, entry) => {
-        const present = Boolean(get()[list][libraryKey(entry.mediaType, entry.id)])
-        trackEvent(present ? 'library_remove' : 'library_add', {
+      toggle: (list, partial) => {
+        const key = libraryKey(partial.mediaType, partial.id)
+        const existing = get()[list][key]
+        const entry: LibraryEntry = existing ?? { ...partial, addedAt: Date.now() }
+
+        trackEvent(existing ? 'library_remove' : 'library_add', {
           list,
           media_type: entry.mediaType,
           item_id: entry.id,
           item_name: entry.title,
         })
 
-        set((state) => {
-          const key = libraryKey(entry.mediaType, entry.id)
-          const current = state[list]
+        set((state) => ({
+          [list]: existing ? without(state[list], key) : { ...state[list], [key]: entry },
+        }) as Pick<LibraryState, LibraryList>)
 
-          if (current[key]) {
-            // Rebuild without the key rather than mutating in place.
-            const { [key]: _removed, ...rest } = current
-            return { [list]: rest } as Pick<LibraryState, LibraryList>
-          }
-
-          return {
-            [list]: { ...current, [key]: { ...entry, addedAt: Date.now() } },
-          } as Pick<LibraryState, LibraryList>
-        })
+        emit({ type: existing ? 'remove' : 'add', list, entry, origin: 'user' })
         syncLibraryUserProperties(get())
       },
 
       remove: (list, mediaType, id) => {
         const key = libraryKey(mediaType, id)
         const existing = get()[list][key]
-        if (existing) {
-          trackEvent('library_remove', {
-            list,
-            media_type: mediaType,
-            item_id: id,
-            item_name: existing.title,
-          })
-        }
+        if (!existing) return
 
-        set((state) => {
-          const { [key]: _removed, ...rest } = state[list]
-          return { [list]: rest } as Pick<LibraryState, LibraryList>
+        trackEvent('library_remove', {
+          list,
+          media_type: mediaType,
+          item_id: id,
+          item_name: existing.title,
         })
+
+        set((state) => ({ [list]: without(state[list], key) }) as Pick<LibraryState, LibraryList>)
+        emit({ type: 'remove', list, entry: existing, origin: 'user' })
         syncLibraryUserProperties(get())
       },
 
       clear: (list) => {
-        trackEvent('library_clear', { list, item_count: Object.keys(get()[list]).length })
+        const entries = Object.values(get()[list])
+        trackEvent('library_clear', { list, item_count: entries.length })
         set({ [list]: {} } as Pick<LibraryState, LibraryList>)
+        for (const entry of entries) emit({ type: 'remove', list, entry, origin: 'user' })
+        syncLibraryUserProperties(get())
+      },
+
+      mergeEntries: (list, entries, origin) => {
+        const current = get()[list]
+        const added = entries.filter((entry) => !current[libraryKey(entry.mediaType, entry.id)])
+        if (added.length === 0) return
+
+        const next = { ...current }
+        for (const entry of added) next[libraryKey(entry.mediaType, entry.id)] = entry
+        set({ [list]: next } as Pick<LibraryState, LibraryList>)
+
+        for (const entry of added) emit({ type: 'add', list, entry, origin })
+        syncLibraryUserProperties(get())
+      },
+
+      replaceList: (list, map) => {
+        set({ [list]: map } as Pick<LibraryState, LibraryList>)
+        syncLibraryUserProperties(get())
+      },
+
+      reset: () => {
+        set({ favorites: {}, watchlist: {} })
         syncLibraryUserProperties(get())
       },
     }),
     {
       name: 'library-storage',
       version: 1,
+      // Only data is persisted; actions are recreated on load.
+      partialize: (state) => ({ favorites: state.favorites, watchlist: state.watchlist }),
     },
   ),
 )

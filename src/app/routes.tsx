@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { RootLayout } from '@/components/layout/RootLayout'
 import NotFoundPage from '@/features/misc/NotFoundPage'
 import { LegacyDetailRedirect, LegacySearchRedirect } from './LegacyRedirects'
+import { GuestOnly, RequireAuth } from '@/features/auth/components/RouteGuards'
 
 /**
  * Route table with per-route code splitting.
@@ -22,6 +23,11 @@ const SearchPage = lazy(() => import('@/features/search/SearchPage'))
 const DiscoverPage = lazy(() => import('@/features/discover/DiscoverPage'))
 const KeywordPage = lazy(() => import('@/features/keyword/KeywordPage'))
 const LibraryPage = lazy(() => import('@/features/library/LibraryPage'))
+const LoginPage = lazy(() => import('@/features/auth/LoginPage'))
+const SignUpPage = lazy(() => import('@/features/auth/SignUpPage'))
+const ForgotPasswordPage = lazy(() => import('@/features/auth/ForgotPasswordPage'))
+const AccountPage = lazy(() => import('@/features/auth/AccountPage'))
+const TmdbCallbackPage = lazy(() => import('@/features/auth/TmdbCallbackPage'))
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +55,27 @@ export const router = createBrowserRouter([
 
       { path: 'favorites', element: <LibraryPage list="favorites" /> },
       { path: 'watchlist', element: <LibraryPage list="watchlist" /> },
+
+      // Accounts. Guards are pathless layout routes so each page stays lazy.
+      {
+        element: <GuestOnly />,
+        children: [
+          { path: 'login', element: <LoginPage /> },
+          { path: 'forgot-password', element: <ForgotPasswordPage /> },
+        ],
+      },
+      {
+        element: <GuestOnly fallback="/account" />,
+        children: [{ path: 'signup', element: <SignUpPage /> }],
+      },
+      {
+        element: <RequireAuth />,
+        children: [
+          { path: 'account', element: <AccountPage /> },
+          // TMDB's approval page redirects back here (see lib/tmdb/accountSync).
+          { path: 'auth/tmdb/callback', element: <TmdbCallbackPage /> },
+        ],
+      },
 
       // Legacy paths from the previous version, kept so existing links and
       // bookmarks don't 404. `/overeview/:id` had no media type, so it can only

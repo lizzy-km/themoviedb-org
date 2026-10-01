@@ -53,6 +53,17 @@ export interface AnalyticsEvents {
 
   theme_change: { theme: ThemeMode }
 
+  /** GA4 recommended auth events. */
+  sign_up: { method: AuthMethod }
+  login: { method: AuthMethod }
+  logout: { method: 'manual' }
+  account_delete: { method: 'manual' }
+  password_reset_request: { method: 'password' }
+
+  tmdb_link: { status: 'started' | 'success' | 'denied' | 'error' }
+  tmdb_unlink: { method: 'manual' | 'sign_out' }
+  tmdb_import: { favorites: number; watchlist: number }
+
   /** Render crash caught by an ErrorBoundary (GA4 recommended event). */
   exception: { description: string; fatal: boolean }
   /** A TMDB request that failed after all retries. */
@@ -71,6 +82,8 @@ export interface AnalyticsEvents {
   }
 }
 
+export type AuthMethod = 'password' | 'google'
+
 export type SearchSource = 'header' | 'header_mobile' | 'hero'
 
 interface LibraryEventParams {
@@ -88,4 +101,6 @@ export interface UserProperties {
   theme_preference?: ThemeMode
   favorites_count?: string
   watchlist_count?: string
+  signed_in?: 'true' | 'false'
+  tmdb_linked?: 'true' | 'false'
 }

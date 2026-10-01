@@ -1,6 +1,6 @@
-import type { FirebaseOptions } from 'firebase/app'
 import type * as FirebaseAnalytics from 'firebase/analytics'
 import type { AnalyticsEventName, AnalyticsEventParams, UserProperties } from './events'
+import { firebaseConfig, getFirebaseApp } from '@/lib/firebase/app'
 
 /**
  * Firebase Analytics client.
@@ -16,16 +16,6 @@ import type { AnalyticsEventName, AnalyticsEventParams, UserProperties } from '.
  */
 
 const env = import.meta.env
-
-const firebaseConfig: FirebaseOptions = {
-  apiKey: env.VITE_FIREBASE_API_KEY,
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: env.VITE_FIREBASE_APP_ID,
-  measurementId: env.VITE_FIREBASE_MEASUREMENT_ID,
-}
 
 /** Debug mode: logs every call to the console and routes events to GA4 DebugView. */
 export const ANALYTICS_DEBUG = env.VITE_ANALYTICS_DEBUG === 'true'
@@ -82,17 +72,14 @@ export function initAnalytics(): Promise<Ready | null> {
     }
 
     try {
-      const [{ initializeApp, getApps }, mod] = await Promise.all([
-        import('firebase/app'),
-        import('firebase/analytics'),
-      ])
+      const [app, mod] = await Promise.all([getFirebaseApp(), import('firebase/analytics')])
+      if (!app) return null
 
       if (!(await mod.isSupported())) {
         debugLog('Analytics not supported in this browser.')
         return null
       }
 
-      const app = getApps()[0] ?? initializeApp(firebaseConfig)
       const analytics = mod.initializeAnalytics(app, {
         config: {
           // Page views are sent manually by <RouteTracker> on every SPA
@@ -155,5 +142,13 @@ export function setAnalyticsConsent(granted: boolean): void {
   debugLog('consent', granted)
   void initAnalytics().then((r) => {
     if (r) r.mod.setAnalyticsCollectionEnabled(r.analytics, granted)
+  })
+}
+
+/** Ties events to the signed-in account (`null` on sign-out). Never send PII here. */
+export function setAnalyticsUserId(uid: string | null): void {
+  debugLog('user id', uid)
+  void initAnalytics().then((r) => {
+    if (r) r.mod.setUserId(r.analytics, uid)
   })
 }

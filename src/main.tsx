@@ -7,6 +7,7 @@ import { queryClient } from '@/lib/query/client'
 import { router } from '@/app/routes'
 import { ErrorBoundary } from '@/components/feedback/ErrorBoundary'
 import { initAnalytics, reportWebVitals, setUserProperties } from '@/lib/analytics'
+import { initAuth } from '@/lib/auth/session'
 import { useLibraryStore } from '@/stores/libraryStore'
 import { useThemeStore } from '@/stores/themeStore'
 import '@/styles/index.css'
@@ -19,6 +20,8 @@ if (!container) {
 // Analytics loads in the background; it never blocks the first render.
 void initAnalytics()
 reportWebVitals()
+// Restores the Firebase session in the background; the UI shows a pending state until it resolves.
+initAuth()
 
 // Snapshot of persisted state, so reports can be segmented by it.
 const library = useLibraryStore.getState()

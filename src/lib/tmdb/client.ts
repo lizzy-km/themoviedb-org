@@ -38,6 +38,10 @@ export interface RequestOptions {
   signal?: AbortSignal
   /** Per-request timeout in ms. Defaults to 15s. */
   timeoutMs?: number
+  /** Defaults to GET. Writes are only used by the account endpoints. */
+  method?: 'GET' | 'POST' | 'DELETE'
+  /** JSON-serialized request body. */
+  body?: unknown
 }
 
 const DEFAULT_TIMEOUT_MS = 15_000
@@ -59,13 +63,13 @@ function buildUrl(path: string, params?: Record<string, QueryValue>): string {
 }
 
 /**
- * Performs a typed GET against the TMDB v3 API.
+ * Performs a typed request against the TMDB v3 API.
  *
  * Combines the caller's abort signal with an internal timeout, so a hung
  * request can never leak a pending promise into React Query.
  */
 export async function tmdbFetch<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { params, signal, timeoutMs = DEFAULT_TIMEOUT_MS } = options
+  const { params, signal, timeoutMs = DEFAULT_TIMEOUT_MS, method = 'GET', body } = options
 
   const timeoutSignal = AbortSignal.timeout(timeoutMs)
   const combinedSignal = signal ? AbortSignal.any([signal, timeoutSignal]) : timeoutSignal
@@ -73,11 +77,13 @@ export async function tmdbFetch<T>(path: string, options: RequestOptions = {}): 
   let response: Response
   try {
     response = await fetch(buildUrl(path, params), {
-      method: 'GET',
+      method,
       headers: {
         accept: 'application/json',
         Authorization: `Bearer ${ACCESS_TOKEN}`,
+        ...(body !== undefined && { 'content-type': 'application/json;charset=utf-8' }),
       },
+      ...(body !== undefined && { body: JSON.stringify(body) }),
       signal: combinedSignal,
     })
   } catch (error) {
