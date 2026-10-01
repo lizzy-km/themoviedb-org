@@ -1,5 +1,6 @@
-import { QueryClient } from '@tanstack/react-query'
+import { QueryCache, QueryClient } from '@tanstack/react-query'
 import { TmdbError } from '@/lib/tmdb/client'
+import { trackEvent } from '@/lib/analytics'
 
 /**
  * Shared QueryClient.
@@ -10,6 +11,18 @@ import { TmdbError } from '@/lib/tmdb/client'
  * `useMutation` for reads, so every mount refetched from scratch.
  */
 export const queryClient = new QueryClient({
+  // Fires once per query after retries are exhausted, not per attempt.
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      // Aborts are navigation, not failures.
+      if (error instanceof DOMException && error.name === 'AbortError') return
+      trackEvent('api_error', {
+        endpoint: query.queryKey.slice(0, 2).map(String).join('/'),
+        status: error instanceof TmdbError ? error.status : 0,
+        message: error.message,
+      })
+    },
+  }),
   defaultOptions: {
     queries: {
       // Data is considered fresh for 5 minutes — no refetch on remount/focus.

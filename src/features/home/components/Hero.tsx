@@ -55,7 +55,7 @@ export function Hero() {
           </div>
 
           <div className="max-w-3xl">
-            <SearchBar size="lg" />
+            <SearchBar size="lg" source="hero" />
           </div>
         </div>
       </Container>

@@ -3,6 +3,7 @@ import type { ErrorInfo, ReactNode } from 'react'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { AlertIcon } from '@/components/ui/icons'
+import { trackEvent } from '@/lib/analytics'
 
 interface Props {
   children: ReactNode
@@ -30,6 +31,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
     console.error('[ErrorBoundary]', error, info.componentStack)
+    trackEvent('exception', {
+      description: `${error.name}: ${error.message}`,
+      // The boundary keeps the rest of the app usable, so it isn't fatal.
+      fatal: false,
+    })
   }
 
   private reset = (): void => {

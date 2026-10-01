@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { TitleMediaType } from '@/lib/tmdb/types'
+import { setUserProperties, trackEvent } from '@/lib/analytics'
 
 /** Minimal snapshot stored locally so the library renders without a refetch. */
 export interface LibraryEntry {
@@ -36,13 +37,29 @@ interface LibraryState {
   clear: (list: LibraryList) => void
 }
 
+/** Keeps the library-size user properties in sync after every mutation. */
+function syncLibraryUserProperties(state: Pick<LibraryState, LibraryList>): void {
+  setUserProperties({
+    favorites_count: String(Object.keys(state.favorites).length),
+    watchlist_count: String(Object.keys(state.watchlist).length),
+  })
+}
+
 export const useLibraryStore = create<LibraryState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       favorites: {},
       watchlist: {},
 
-      toggle: (list, entry) =>
+      toggle: (list, entry) => {
+        const present = Boolean(get()[list][libraryKey(entry.mediaType, entry.id)])
+        trackEvent(present ? 'library_remove' : 'library_add', {
+          list,
+          media_type: entry.mediaType,
+          item_id: entry.id,
+          item_name: entry.title,
+        })
+
         set((state) => {
           const key = libraryKey(entry.mediaType, entry.id)
           const current = state[list]
@@ -56,16 +73,34 @@ export const useLibraryStore = create<LibraryState>()(
           return {
             [list]: { ...current, [key]: { ...entry, addedAt: Date.now() } },
           } as Pick<LibraryState, LibraryList>
-        }),
+        })
+        syncLibraryUserProperties(get())
+      },
 
-      remove: (list, mediaType, id) =>
+      remove: (list, mediaType, id) => {
+        const key = libraryKey(mediaType, id)
+        const existing = get()[list][key]
+        if (existing) {
+          trackEvent('library_remove', {
+            list,
+            media_type: mediaType,
+            item_id: id,
+            item_name: existing.title,
+          })
+        }
+
         set((state) => {
-          const key = libraryKey(mediaType, id)
           const { [key]: _removed, ...rest } = state[list]
           return { [list]: rest } as Pick<LibraryState, LibraryList>
-        }),
+        })
+        syncLibraryUserProperties(get())
+      },
 
-      clear: (list) => set({ [list]: {} } as Pick<LibraryState, LibraryList>),
+      clear: (list) => {
+        trackEvent('library_clear', { list, item_count: Object.keys(get()[list]).length })
+        set({ [list]: {} } as Pick<LibraryState, LibraryList>)
+        syncLibraryUserProperties(get())
+      },
     }),
     {
       name: 'library-storage',

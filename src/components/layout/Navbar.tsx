@@ -131,7 +131,7 @@ export function Navbar() {
       {/* Mobile search drawer. */}
       {searchOpen && (
         <div className="border-t border-white/10 bg-navy px-4 py-3 lg:hidden">
-          <SearchBar autoFocus onNavigate={() => setSearchOpen(false)} />
+          <SearchBar autoFocus source="header_mobile" onNavigate={() => setSearchOpen(false)} />
         </div>
       )}
 

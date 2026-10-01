@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button'
 import { useGenres, useInfiniteDiscover } from '@/lib/query/hooks'
 import { normalizeTitle, uniqueById } from '@/lib/utils/media'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { trackEvent } from '@/lib/analytics'
 import { cn } from '@/lib/utils/cn'
 import type { DiscoverParams, DiscoverSort, TitleMediaType } from '@/lib/tmdb/types'
 
@@ -90,6 +91,7 @@ export default function DiscoverPage() {
     const next = selectedGenres.includes(genreId)
       ? selectedGenres.filter((id) => id !== genreId)
       : [...selectedGenres, genreId]
+    trackEvent('discover_filter', { media_type: mediaType, filter: 'genre', value: next.join(',') })
     updateParam('genre', next.length ? next.join(',') : null)
   }
 
@@ -108,6 +110,7 @@ export default function DiscoverPage() {
           value={mediaType}
           onChange={(value) => {
             // Genre ids differ between movie and TV, so clear them on switch.
+            trackEvent('discover_filter', { media_type: value, filter: 'media_type', value })
             const next = new URLSearchParams(searchParams)
             next.set('type', value)
             next.delete('genre')
@@ -122,7 +125,14 @@ export default function DiscoverPage() {
             <Select
               label="Sort by"
               value={sortBy}
-              onChange={(event) => updateParam('sort', event.target.value)}
+              onChange={(event) => {
+                trackEvent('discover_filter', {
+                  media_type: mediaType,
+                  filter: 'sort',
+                  value: event.target.value,
+                })
+                updateParam('sort', event.target.value)
+              }}
               options={SORT_OPTIONS}
             />
           </div>
@@ -130,7 +140,10 @@ export default function DiscoverPage() {
           {hasFilters && (
             <Button
               variant="ghost"
-              onClick={() => setSearchParams({ type: mediaType }, { replace: true })}
+              onClick={() => {
+                trackEvent('discover_filter', { media_type: mediaType, filter: 'clear', value: '' })
+                setSearchParams({ type: mediaType }, { replace: true })
+              }}
             >
               Clear filters
             </Button>

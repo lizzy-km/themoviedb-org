@@ -18,6 +18,7 @@ import { pickContentRating, pickTrailer } from '@/lib/utils/media'
 import { formatRuntime, formatYear } from '@/lib/utils/format'
 import { useNumericParam } from '@/hooks/useNumericParam'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { useTrackTitleView } from '@/lib/analytics'
 import { NotFoundPage } from '@/features/misc/NotFoundPage'
 
 type MediaTab = 'videos' | 'backdrops' | 'posters'
@@ -31,6 +32,8 @@ export default function TvDetailPage() {
   const { data: show, isLoading, isError, error, refetch } = useTvDetail(tvId)
 
   usePageTitle(show ? `${show.name}${formatYear(show.first_air_date) ? ` (${formatYear(show.first_air_date)})` : ''}` : undefined)
+
+  useTrackTitleView('tv', show?.id, show?.name)
 
   const trailer = useMemo(() => pickTrailer(show?.videos?.results), [show])
 

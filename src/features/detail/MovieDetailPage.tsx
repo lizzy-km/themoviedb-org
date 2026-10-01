@@ -16,6 +16,7 @@ import { useMovieDetail } from '@/lib/query/hooks'
 import { pickCertification, pickDirectors, pickTrailer, pickWriters } from '@/lib/utils/media'
 import { useNumericParam } from '@/hooks/useNumericParam'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { useTrackTitleView } from '@/lib/analytics'
 import { NotFoundPage } from '@/features/misc/NotFoundPage'
 import { formatYear } from '@/lib/utils/format'
 
@@ -30,6 +31,8 @@ export default function MovieDetailPage() {
   const { data: movie, isLoading, isError, error, refetch } = useMovieDetail(movieId)
 
   usePageTitle(movie ? `${movie.title}${formatYear(movie.release_date) ? ` (${formatYear(movie.release_date)})` : ''}` : undefined)
+
+  useTrackTitleView('movie', movie?.id, movie?.title)
 
   const trailer = useMemo(() => pickTrailer(movie?.videos?.results), [movie])
 

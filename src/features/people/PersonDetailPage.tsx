@@ -15,6 +15,7 @@ import { formatDate } from '@/lib/utils/format'
 import { normalizeCredit, uniqueById } from '@/lib/utils/media'
 import { useNumericParam } from '@/hooks/useNumericParam'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { useTrackPersonView } from '@/lib/analytics'
 import { NotFoundPage } from '@/features/misc/NotFoundPage'
 
 const GENDER_LABELS: Record<number, string> = {
@@ -30,6 +31,7 @@ export default function PersonDetailPage() {
   const { data: person, isLoading, isError, error, refetch } = usePersonDetail(personId)
 
   usePageTitle(person?.name)
+  useTrackPersonView(person?.id, person?.name)
 
   /** Acting credits, newest first, deduped across roles. */
   const actingCredits = useMemo(() => {

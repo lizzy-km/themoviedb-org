@@ -7,6 +7,7 @@ import { Tabs } from '@/components/ui/Tabs'
 import { useInfiniteMovieList } from '@/lib/query/hooks'
 import { normalizeTitle, uniqueById } from '@/lib/utils/media'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { trackEvent } from '@/lib/analytics'
 import type { MovieListCategory } from '@/lib/tmdb/endpoints'
 
 const CATEGORIES = [
@@ -48,7 +49,10 @@ export default function MoviesPage() {
       <Tabs
         items={CATEGORIES}
         value={category}
-        onChange={(value) => setSearchParams({ list: value }, { replace: true })}
+        onChange={(value) => {
+          trackEvent('browse_category', { media_type: 'movie', category: value })
+          setSearchParams({ list: value }, { replace: true })
+        }}
         variant="underline"
         aria-label="Movie category"
         className="mb-6"

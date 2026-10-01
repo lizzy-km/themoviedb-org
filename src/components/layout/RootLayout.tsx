@@ -4,6 +4,7 @@ import { Navbar } from './Navbar'
 import { Footer } from './Footer'
 import { Spinner } from '@/components/ui/Spinner'
 import { ErrorBoundary } from '@/components/feedback/ErrorBoundary'
+import { RouteTracker } from '@/lib/analytics'
 
 /** Fallback shown while a lazily-loaded route chunk downloads. */
 function RouteFallback() {
@@ -37,6 +38,7 @@ export function RootLayout() {
 
       <Footer />
       <ScrollRestoration />
+      <RouteTracker />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { setUserProperties, trackEvent } from '@/lib/analytics'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 
@@ -40,6 +41,8 @@ export const useThemeStore = create<ThemeState>()(
       mode: 'system',
       setMode: (mode) => {
         applyTheme(mode)
+        trackEvent('theme_change', { theme: mode })
+        setUserProperties({ theme_preference: mode })
         set({ mode })
       },
       cycleMode: () => {

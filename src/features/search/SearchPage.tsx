@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Container, PageHeader } from '@/components/layout/Section'
 import { InfiniteGrid, PersonGrid } from '@/components/media/InfiniteGrid'
@@ -17,6 +17,7 @@ import { normalizeTitle, uniqueById } from '@/lib/utils/media'
 import { useIntersection } from '@/hooks/useIntersection'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import type { MovieListItem, PersonListItem, TvListItem } from '@/lib/tmdb/types'
+import { trackEvent } from '@/lib/analytics'
 
 const SCOPES = [
   { value: 'movie', label: 'Movies' },
@@ -55,6 +56,17 @@ export default function SearchPage() {
     onIntersect: results.fetchNextPage,
     enabled: results.hasNextPage && !results.isFetchingNextPage && !results.isError,
   })
+
+  // One `view_search_results` per query + scope once the first page arrives.
+  const firstPageTotal = results.data?.pages[0]?.total_results
+  useEffect(() => {
+    if (!query || firstPageTotal === undefined) return
+    trackEvent('view_search_results', {
+      search_term: query,
+      search_scope: scope,
+      result_count: firstPageTotal,
+    })
+  }, [query, scope, firstPageTotal === undefined])
 
   const setScope = (value: SearchScope) => {
     setSearchParams({ q: query, type: value }, { replace: true })

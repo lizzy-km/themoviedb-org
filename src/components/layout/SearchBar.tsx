@@ -8,6 +8,8 @@ import { useSearchSuggestions } from '@/lib/query/hooks'
 import { formatYear } from '@/lib/utils/format'
 import { cn } from '@/lib/utils/cn'
 import type { MultiSearchItem } from '@/lib/tmdb/types'
+import { trackEvent } from '@/lib/analytics'
+import type { SearchSource } from '@/lib/analytics'
 
 export interface SearchBarProps {
   /** Called after a submit or suggestion pick, so the header can close itself. */
@@ -16,6 +18,8 @@ export interface SearchBarProps {
   placeholder?: string
   size?: 'md' | 'lg'
   className?: string
+  /** Which search box this is, for analytics. */
+  source?: SearchSource
 }
 
 function itemLabel(item: MultiSearchItem): string {
@@ -54,6 +58,7 @@ export function SearchBar({
   placeholder = 'Search for a movie, TV show or person…',
   size = 'md',
   className,
+  source = 'header',
 }: SearchBarProps) {
   const navigate = useNavigate()
   const [value, setValue] = useState('')
@@ -86,23 +91,32 @@ export function SearchBar({
       const trimmed = query.trim()
       if (!trimmed) return
       setOpen(false)
+      trackEvent('search', { search_term: trimmed, source })
       // Pass the query as a search param, URL-encoded by the router. The old
       // version interpolated raw titles into the path, which broke on any
       // title containing "/", "?" or "#".
       navigate(`/search?q=${encodeURIComponent(trimmed)}`)
       onNavigate?.()
     },
-    [navigate, onNavigate],
+    [navigate, onNavigate, source],
   )
 
   const goToItem = useCallback(
-    (item: MultiSearchItem) => {
+    (item: MultiSearchItem, position: number) => {
+      trackEvent('select_content', {
+        content_type: 'search_suggestion',
+        item_id: `${item.media_type}:${item.id}`,
+        media_type: item.media_type,
+        search_term: value.trim(),
+        position,
+        source,
+      })
       setOpen(false)
       setValue('')
       navigate(`/${item.media_type}/${item.id}`)
       onNavigate?.()
     },
-    [navigate, onNavigate],
+    [navigate, onNavigate, source, value],
   )
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -114,7 +128,7 @@ export function SearchBar({
     if (event.key === 'Enter') {
       event.preventDefault()
       const active = activeIndex >= 0 ? suggestions[activeIndex] : undefined
-      if (active) goToItem(active)
+      if (active) goToItem(active, activeIndex)
       else goToResults(value)
       return
     }
@@ -211,7 +225,7 @@ export function SearchBar({
                     id={`${listboxId}-option-${index}`}
                     role="option"
                     aria-selected={index === activeIndex}
-                    onClick={() => goToItem(item)}
+                    onClick={() => goToItem(item, index)}
                     onPointerEnter={() => setActiveIndex(index)}
                     className={cn(
                       'flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors',
